@@ -1,169 +1,71 @@
 #include <bits/stdc++.h>
 using namespace std;
-
-int arr[10];
-
-void merge1(int p1, int cen, int q1)
+void merge(int (&arr)[10], int p, int mid, int r)
 {
-    const int n1 = cen - p1 + 1;
-    const int n2 = q1 - cen;
+    int n1 = mid - p + 1;
+    int n2 = r - mid;
+
     int larr[n1];
     int rarr[n2];
 
     for(int i = 0; i < n1; i++)
-    larr[i] = arr[i + p1];
+    {
+        larr[i] = arr[i + p];
+    }
 
     for(int i = 0; i < n2; i++)
-    rarr[i] = arr[i + cen + 1];
+    {
+        rarr[i] = arr[i + mid + 1];
+    }
 
-    int i, j;
-    int k = p1;
-    i = j = 0;
-
+    int i, j; i = j = 0;
+    int k = p;
     while(i < n1 && j < n2)
     {
-    if(larr[i] <= rarr[j])
-    {
-    arr[k] = larr[i];
-    i++;
-    k++;
+        if(larr[i] <= rarr[j])
+        arr[k++] = larr[i++];
+
+        if(rarr[j] < larr[i])
+        arr[k++] = rarr[j++];
     }
-    else
-    {
-        arr[k] = rarr[j];
-        j++;
-        k++;
-    }
-    }
+
+    
+        while(j < n2)
+        arr[k++] = rarr[j++];
+    
 
     
         while(i < n1)
-        {
-            arr[k++] = larr[i];
-            i++;
-        }
+        arr[k++] = larr[i++];
     
-    
-        while(j < n2)
-        {
-            arr[k++] = rarr[j];
-            j++;
-        }
-
 
 }
 
-void merge_sort(int p, int q)
+void merge_sort(int (&arr)[10], int p, int r)
 {
-    
-    int cen = 0;
-
-    if(p < q)
+    if(p < r)
     {
-        cen = (p + q) / 2;
-        merge_sort(p, cen);
-        merge_sort(cen + 1, q);
-        merge1(p, cen, q);
+        int mid = (p + r) / 2;
+        merge_sort(arr, p, mid);
+        merge_sort(arr, mid + 1, r);
+        merge(arr, p, mid, r);
     }
-    else 
-    return;
-
 }
 
 int main()
 {
+    int arr[10];
+    cout << "Input 10 elements :" << endl;
+    for(int i = 0; i < 10; i++)
+    cin >> arr[i];
 
-for(int i = 0; i <= 9 ; i++)
-cin >> arr[i];
+    int p, r; p = r = 0;
+    cout << "Enter the indices to sort the array between: " << endl;
+    cin >> p >> r;
 
-int p, q;
-cout << "Enter the indices to sort the array between " << endl;
-cin >> p >> q; 
+    merge_sort(arr, p, r);
 
-merge_sort(p, q);
-
-for(int i = 0; i < 10; i++)
-cout << arr[i] << endl;
-
-return 0;
-
+    cout << endl;
+    for(int i = 0; i < 10; i++)
+    cout << arr[i] << endl;
 }
-// #include <bits/stdc++.h>
-// using namespace std;
-
-// int arr[10];
-
-// // Merges two subarrays of arr[].
-// // First subarray is arr[p1..cen]
-// // Second subarray is arr[cen+1..q1]
-// void merge1(int p1, int cen, int q1) {
-//     const int n1 = cen - p1 + 1;
-//     const int n2 = q1 - cen;
-//     vector<int> larr(n1);
-//     vector<int> rarr(n2);
-
-//     for (int i = 0; i < n1; i++)
-//         larr[i] = arr[p1 + i];
-
-//     for (int i = 0; i < n2; i++)
-//         rarr[i] = arr[cen + 1 + i];
-
-//     int i = 0, j = 0, k = p1;
-//     while (i < n1 && j < n2) {
-//         if (larr[i] <= rarr[j]) {
-//             arr[k] = larr[i];
-//             i++;
-//         } else {
-//             arr[k] = rarr[j];
-//             j++;
-//         }
-//         k++;
-//     }
-
-//     // Copy the remaining elements of larr[], if there are any
-//     while (i < n1) {
-//         arr[k] = larr[i];
-//         i++;
-//         k++;
-//     }
-
-//     // Copy the remaining elements of rarr[], if there are any
-//     while (j < n2) {
-//         arr[k] = rarr[j];
-//         j++;
-//         k++;
-//     }
-// }
-
-// void merge_sort(int p, int q) {
-//     if (p < q) {
-//         int cen = p + (q - p) / 2;
-//         merge_sort(p, cen);
-//         merge_sort(cen + 1, q);
-//         merge1(p, cen, q);
-//     }
-// }
-
-// int main() {
-//     cout << "Enter 10 elements of the array:" << endl;
-//     for (int i = 0; i < 10; i++)
-//         cin >> arr[i];
-
-//     int p, q;
-//     cout << "Enter the indices to sort the array between (0-based index):" << endl;
-//     cin >> p >> q;
-
-//     if (p >= 0 && q < 10 && p <= q) {
-//         merge_sort(p, q);
-//     } else {
-//         cout << "Invalid indices." << endl;
-//         return 1;
-//     }
-
-//     cout << "Sorted array:" << endl;
-//     for (int i = 0; i < 10; i++)
-//         cout << arr[i] << " ";
-//     cout << endl;
-
-//     return 0;
-// }
